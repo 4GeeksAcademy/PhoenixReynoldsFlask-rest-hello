@@ -13,10 +13,10 @@ from models import db, User, Character, Planet, Favorite
 
 # where your endpoints should be coded
 
-app = Flask(__name__)
+app = Flask(__name__) # dunders- predefined methods in py classes // get current name, make it a flask app, assign that tp "app"
 app.url_map.strict_slashes = False
 
-db_url = os.getenv("DATABASE_URL")
+db_url = os.getenv("DATABASE_URL") # os.getenv allows .env integration // operating system, get environmental variables
 if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
 else:
@@ -32,6 +32,7 @@ setup_admin(app)
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
+# best practice - dictionary format is needed to jsonify properly
 
 # generate sitemap with all your endpoints
 @app.route('/')
@@ -41,11 +42,13 @@ def sitemap():
 @app.route('/user', methods=['GET'])
 def handle_hello():
 
-    response_body = {
-        User
-    }
+    response_body = User.query.all()
+    user_list = []
+    for user in response_body:
+        # user.serialize() #methods are attached like keys // value.method
+        user_list.append(user.serialize())
 
-    return jsonify(response_body), 200
+    return jsonify(user_list), 200
 
 # add get for user, planets, and favorites / add post and delete for favorites
 

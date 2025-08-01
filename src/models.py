@@ -13,7 +13,7 @@ class User(db.Model): #db.Model is inheritable, research implications
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
 
 
-    def serialize(self): # What is this doing exactly?
+    def serialize(self): # serialize is the method that turns it from obj to dict
         return {
             "id": self.id,
             "email": self.email,
